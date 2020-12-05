@@ -7,7 +7,7 @@ from .models import ChatBox
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView, FormView, ListView
-from django.views.generic.edit import ModelFormMixin
+from django.views.generic.edit import ModelFormMixin, UpdateView
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
@@ -115,6 +115,12 @@ def user_view(request):
     #return render(request, "recept.html", args)
         
     return render(request, "user.html", data)
+
+
+class ProfileView(UpdateView):
+    template_name = "profile.html"
+    model = get_user_model()
+
 
 def profile_view(request):
     return render(request, "profile.html")
