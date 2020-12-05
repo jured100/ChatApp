@@ -78,7 +78,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'base.wsgi.application'
 
 env = environ.Env()
-environ.Env.read_env()
 
 DATABASES = {
     'default': {
@@ -90,7 +89,6 @@ DATABASES = {
         'PORT': env('PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
