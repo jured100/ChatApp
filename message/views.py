@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from message import templates
-from .forms import ChatAdd
+from .forms import SubmissionForm, ProfileForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout, get_user_model
 from .models import ChatBox
@@ -54,7 +54,7 @@ def logout_view(request):
 class ChatView(ModelFormMixin, ListView):
     template_name = 'groupchat.html'
     model = ChatBox
-    form_class = ChatAdd
+    form_class = SubmissionForm
 
     def get_queryset(self):
         qs = ChatBox.objects.filter(receiver__isnull=True)
@@ -70,7 +70,7 @@ def group_chat_view(request, *args, **kwargs):
     comm = ChatBox.objects.filter(receiver__isnull=True)
     other_user = None
     receiver_id = kwargs.get('receiving_user__id')
-    form = ChatAdd(request.POST)
+    form = SubmissionForm(request.POST)
     
     if receiver_id:
         other_user = get_object_or_404(get_user_model(), pk=receiver_id)
@@ -85,7 +85,7 @@ def group_chat_view(request, *args, **kwargs):
             if other_user:
                 message.receiver=other_user
             message.save()
-            form = ChatAdd()
+            form = SubmissionForm()
             return HttpResponseRedirect(request.path_info)
 
     args = {"form": form, "comm": comm}
@@ -120,6 +120,7 @@ def user_view(request):
 class ProfileView(UpdateView):
     template_name = "profile.html"
     model = get_user_model()
+    form_class = ProfileForm
 
 
 def profile_view(request):
