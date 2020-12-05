@@ -1,0 +1,30 @@
+version: '3.1'
+# This is only in order to run the local dev environment
+# Type `docker-compose up` in your terminal
+services:
+  db:
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_USER: chatuser
+      POSTGRES_PASSWORD: chatpassword
+      POSTGRES_DB: chatdb
+    ports:
+      - 5432:5432
+
+  web:
+    build: .
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      DATABASE: chatdb
+      USERNAME: chatuser
+      PASSWORD: chatpassword
+      HOST: db
+      PORT: 5432
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+    depends_on:
+      - db

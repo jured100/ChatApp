@@ -1,4 +1,4 @@
-{% extends "template.html"%}
+{% extends "base.html" %}
 
 {% block content %}
 
@@ -7,27 +7,27 @@
     {% if user.is_authenticated %}
 
 
-        <div class="chatBox">
+        <div class="chatbox">
             {% for f in comm %}
                 {% if user == f.sender %}
-                    <div class="chatMessage2">
+                    <div class="message message--mine">
                         <p class="username">{{f.sender}}</p> <p class="userdate"> {{f.datum}} </p>
                         <p class="txt">  {{f.txt}} </p>
                     </div>
                 {% else %}
-                    <div class="chatMessage1">
+                    <div class="message message--other">
                         <p class="username">{{f.sender}}</p> <p class="userdate"> {{f.datum}} </p>
                         <p class="txt">  {{f.txt}} </p>
                     </div>
                 {% endif %}
             {% endfor %}
 
-            <div class="addMessage">
+            <div class="submission">
                 <form method="POST">
                     {% csrf_token %}
                     {{ form.txt }}
                     
-                    <button class="addMessage__button" type="submit">Dodaj</button>
+                    <button class="submission__button" type="submit">Dodaj</button>
                 </form>
             </div>
         </div>

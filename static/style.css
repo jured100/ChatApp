@@ -1,4 +1,4 @@
-.content{
+.content {
     background-color: gray;
     color: white;
 }
@@ -14,13 +14,14 @@
 
 .navbar__list__item {
     float: left;
-    font-family: "franklin gothic heavy";
+    font-family: "franklin gothic heavy", serif;
     font-size: 28px;
     position: relative;
     -ms-transform: translateY(28%);
     transform: translateY(28%);
 }
-.page__title{
+
+.page__title {
     float: left;
 }
 
@@ -36,33 +37,34 @@
     background-color: #6bf2f7;
 }
 
-.navbar__list__user{
+.navbar__list__user {
     float: left;
-    font-family: "franklin gothic heavy";
+    font-family: "franklin gothic heavy", serif;
     font-size: 18px;
     position: relative;
     -ms-transform: translateY(50%);
     transform: translateY(50%);
     margin-left: 20px;
+    color: black;
 }
 
-.userdate{
+.userdate {
     font-style: bold;
     font-family: 'Times New Roman', Times, serif;
     color: white;
 }
 
-.username{
+.username {
     font-style: bold;
     font-family: 'Times New Roman', Times, serif;
     color: white;
 }
 
-.txt{
+.txt {
     color: white;
 }
 
-.chatBox{
+.chatbox {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -72,28 +74,25 @@
     padding: 20px;
     border-radius: 10px;
 }
-
-.chatMessage1{
+.message {
     border-radius: 25px;
-    background: #23a5cc;
     padding: 20px;
     width: 50%;
     margin-top: 25px;
     margin-bottom: 10px;
     margin-left: auto;
 }
-.chatMessage2{
-    border-radius: 25px;
-    background: #3ca51c;
-    padding: 20px;
-    width: 50%;
-    margin-top: 25px;
-    margin-bottom: 10px;
-    margin-left: 30px;
-    justify-content: left;
+
+.message--other {
+    background: #23a5cc;
+    margin-left: auto;
 }
 
-.addMessage{
+.message--mine {
+    background: #3ca51c;
+}
+
+.submission {
     width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -102,10 +101,10 @@
     border-radius: 10px;
 }
 
-.addMessage__button {
+.submission__button {
 
 }
 
-.addMessage__mesage{
-    
+.submission__message {
+
 }
