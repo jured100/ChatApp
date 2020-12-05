@@ -1,0 +1,22 @@
+{% load static %}
+
+<nav>
+    <ul id="navbar" class="navbar__list">
+        <li class="page__title"><a id="home" href="/"><img class="page__title__image" src="{% static 'images/Logo.png' %}" alt="Logo" width="250"/></a></li>
+        <li class="navbar__list__item"><a href="/">Domov</a></li>
+        <li class="navbar__list__item"><a href="/users/">Uporabniki</a></li>
+        <li class="navbar__list__item"><a href="/groupchat/">Skupinski chat</a></li>
+        <li class="navbar__list__item"><a href="/login/">Login</a></li>
+        <li class="navbar__list__item"><a href="/register/">Register</a></li>
+        <li class="navbar__list__item"><a href="/profile/">Profil</a></li>  
+        <li class="navbar__list__user">
+          {% if user.is_authenticated %}
+            Dober dan {{ user }}!
+            <p><a href="{% url 'message:logout' %}">Odjava</a></p>
+          {% else %}
+            <p>Prosim prijavi se</p>
+            <a href="{% url 'message:login' %}">Prijava</a>
+          {% endif %}</li>
+    </ul>
+</nav>
+

@@ -1,0 +1,44 @@
+{% extends "template.html"%}
+
+{% block content %}
+
+
+
+    {% if user.is_authenticated %}
+
+
+        <div class="chatBox">
+            {% for f in comm %}
+                {% if user == f.sender %}
+                    <div class="chatMessage2">
+                        <p class="username">{{f.sender}}</p> <p class="userdate"> {{f.datum}} </p>
+                        <p class="txt">  {{f.txt}} </p>
+                    </div>
+                {% else %}
+                    <div class="chatMessage1">
+                        <p class="username">{{f.sender}}</p> <p class="userdate"> {{f.datum}} </p>
+                        <p class="txt">  {{f.txt}} </p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <div class="addMessage">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.txt }}
+                    
+                    <button class="addMessage__button" type="submit">Dodaj</button>
+                </form>
+            </div>
+        </div>
+        
+        
+
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'message:login' %}">login</a>
+    {% endif %}
+
+
+
+{% endblock %}

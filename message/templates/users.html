@@ -1,0 +1,13 @@
+{% extends "template.html" %}
+
+{% block content %}
+
+Trenutno registrirani uporabniki (pritisni na uporabnika za njihov profil): <br>
+
+{% for u in users %}
+    {% comment %} <p class="username"><a href="/lookup?id={{ u.username }}"> {{u.username}} </a></p> {% endcomment %}
+    <p class="username"><a href="{% url 'message:private_message' receiving_user__id=u.pk %}"> {{u.username}} </a></p>
+    
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "template.html" %}
+
+{% block content %}
+    <div class="login">
+        <h4>Login</h4>
+
+        <form method="POST">
+            {% csrf_token %}
+            <p class="login__username">Uporabniško ime: {{ form.username }}</p>
+            <p class="login__password">Geslo: {{ form.password }}</p>
+            <a href="{% url 'message:login' %}"><button type="submit">Login</button></a>
+        </form>
+    </div>
+{% endblock %}
