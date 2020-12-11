@@ -15,7 +15,7 @@ services:
       - ~/data/ChatApp:/var/lib/postgresql/data/
 
 
-  web:
+  django:
     labels:
       - traefik.http.routers.web.tls=true
       - traefik.http.routers.web.tls.certresolver=myresolver
