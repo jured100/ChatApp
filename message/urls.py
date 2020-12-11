@@ -13,6 +13,6 @@ urlpatterns = [
     # path("/", logout_view, name="logout"),
     path("logout", auth_views.LogoutView.as_view(next_page='/'), name="logout"),
     path('users/', users_view, name="users"),
-    path('profile/', ProfileView.as_view(), name="profile"),
+    path('profile/<int:pk>', ProfileView.as_view(), name="profile"),
     path('private_message/<int:receiving_user__id>', group_chat_view, name="private_message"),
 ]

@@ -122,6 +122,7 @@ class ProfileView(UpdateView):
     model = get_user_model()
     form_class = ProfileForm
 
+    
 
 def profile_view(request):
     return render(request, "profile.html")
