@@ -17,6 +17,8 @@ services:
 
   web:
     labels:
+      - traefik.http.routers.blog.tls=true
+      - traefik.http.routers.blog.tls.certresolver=myresolver
       - "traefik.http.routers.whoami.rule=Host(`jured.best`)"
     build: .
     restart: always
