@@ -16,10 +16,14 @@ services:
 
 
   django:
+    container_name: django
     labels:
+      - "traefik.enable=true"
       - traefik.http.routers.django.tls=true
       - traefik.http.routers.django.tls.certresolver=myresolver
-      - "traefik.http.routers.django.rule=Host(`jured.best`)"
+      #- "traefik.http.routers.django.rule=Host(`jured.best`)"
+      - "traefik.http.routers.django.rule=Host(django.localhost)"
+      - "traefik.http.routers.django.entrypoints=web"
     build: .
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
