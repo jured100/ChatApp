@@ -81,7 +81,14 @@ env = environ.Env()
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': env('DATABASE'),
         'USER': env('USERNAME'),
         'PASSWORD': env('PASSWORD'),
@@ -89,6 +96,7 @@ DATABASES = {
         'PORT': env('PORT'),
     }
 }
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
