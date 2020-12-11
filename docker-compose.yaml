@@ -26,7 +26,6 @@ services:
       - "traefik.http.routers.django.entrypoints=websecure"
     build: .
     restart: always
-    command: python manage.py runserver 0.0.0.0:8000
     environment:
       DATABASE: chatdb
       USERNAME: chatuser
