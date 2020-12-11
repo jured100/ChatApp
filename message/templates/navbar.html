@@ -2,13 +2,30 @@
 
 <nav>
     <ul id="navbar" class="navbar__list">
-        <li class="page__title"><a id="home" href="/"><img class="page__title__image" src="{% static 'images/Logo.png' %}" alt="Logo" width="250"/></a></li>
-        <li class="navbar__list__item"><a href="/">Domov</a></li>
-        <li class="navbar__list__item"><a href="/users/">Uporabniki</a></li>
-        <li class="navbar__list__item"><a href="/groupchat/">Skupinski chat</a></li>
-        <li class="navbar__list__item"><a href="/login/">Prijava</a></li>
-        <li class="navbar__list__item"><a href="/register/">Registracija</a></li>
-        <li class="navbar__list__item"><a href="{% url 'message:profile' pk=request.user.pk %}">Profil</a></li>
+        <li class="page__title"><a id="home" href="/">
+            <img class="page__title__image" src="{% static 'images/Logo.png' %}" alt="Logo" width="250"/></a>
+        </li>
+        <li class="navbar__list__item">
+            <a href="/">Domov</a>
+        </li>
+        <li class="navbar__list__item">
+            <a href="/users/">Uporabniki</a>
+        </li>
+        <li class="navbar__list__item">
+            <a href="/groupchat/">Skupinski chat</a>
+        </li>
+        <li class="navbar__list__item">
+            <a href="/login/">Prijava</a>
+        </li>
+        {%  if request.user.is_authenticated %}
+            <li class="navbar__list__item">
+                <a href="{% url 'message:profile' pk=request.user.pk %}">Profil</a>
+            </li>
+        {% else %}
+            <li class="navbar__list__item">
+                <a href="{% url 'message:register' %}">Registracija</a>
+            </li>
+        {% endif %}
         <li class="navbar__list__user">
           {% if user.is_authenticated %}
             Dober dan {{ user }}!

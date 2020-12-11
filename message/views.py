@@ -1,4 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
+from django.urls import reverse
+
 from message import templates
 from .forms import SubmissionForm, ProfileForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -122,7 +124,9 @@ class ProfileView(UpdateView):
     model = get_user_model()
     form_class = ProfileForm
 
-    
+    def get_success_url(self):
+        return reverse('message:profile', kwargs={'pk': self.kwargs['pk']})
+
 
 def profile_view(request):
     return render(request, "profile.html")
