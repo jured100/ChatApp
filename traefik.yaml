@@ -1,15 +1,36 @@
+# https://www.digitalocean.com/community/tutorials/how-to-use-traefik-as-a-reverse-proxy-for-docker-containers-on-ubuntu-18-04
+defaultEntryPoints:
+  - "http"
+  - "https"
 entryPoints:
-  web:
-    address: ":80"
-
-  websecure:
-    address: ":443"
-
-certificatesResolvers:
-  myresolver:
-    acme:
-      email: jured100@gmail.com
-      storage: acme.json
-      httpChallenge:
-        # used during the challenge
-        entryPoint: websecure
+  dashboard:
+    address: "0.0.0.0:8080"
+    auth:
+      basic:
+        users:
+          - "jure:$2y$05$gmNJ6RTmy1pq3I6oYx4SXONkTxJ7PWfBm64.YqhfnLiPTblxTxi1q"
+  http:
+    address: "0.0.0.0:80"
+    redirect:
+      entryPoint: "https"
+  https:
+    address: "0.0.0.0:443"
+    tls: {}
+api:
+  entrypoint: "dashboard"
+acme:
+  email: "jured100@gmail.com"
+  storage: "acme.json"
+  entryPoint: "https"
+  onHostRule: true
+  httpChallenge:
+    entryPoint: "http"
+docker:
+  domain: "sebit.xyz"
+  watch: true
+  network: "web"
+  exposedbydefault: true
+providers:
+  docker: true
+log:
+  level: "DEBUG"

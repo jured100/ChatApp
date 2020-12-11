@@ -1,60 +1,72 @@
-version: '3.1'
-# This is only in order to run the local dev environment
-# Type `docker-compose up` in your terminal
+version: "3.5"
 services:
-  db:
-    image: postgres:12
-    restart: always
-    environment:
-      POSTGRES_DB: chatdb
-      POSTGRES_USER: chatuser
-      POSTGRES_PASSWORD: chatpassword
-    ports:
-      - 5432:5432
-    volumes:
-      - ~/data/ChatApp:/var/lib/postgresql/data/
-
-
-  django:
-    container_name: django
+  postgres:
+    container_name: "postgres"
+    image: "postgres:12"
+    restart: "always"
     labels:
-      - "traefik.enable=true"
-      - traefik.http.routers.django.tls=true
-      - traefik.http.routers.django.tls.certresolver=myresolver
-      - "traefik.http.routers.django.rule=Host(jured.best)"
-      #- "traefik.http.routers.django.rule=Host(django.localhost)"
-      - "traefik.http.routers.django.entrypoints=websecure"
-    build: .
-    restart: always
+      - "traefik.backend=postgres"
+      - "traefik.frontend.rule=Host:db.sebit.xyz"
+      - "traefik.docker.network=web"
+      - "traefik.port=5432"
     environment:
-      DATABASE: chatdb
-      USERNAME: chatuser
-      PASSWORD: chatpassword
-      HOST: db
-      PORT: 5432
-    volumes:
-      - .:/code
-    ports:
-      - 8000:8000
+      POSTGRES_DB: "chatdb"
+      POSTGRES_USER: "chatuser"
+      POSTGRES_PASSWORD: "chatpassword"
     depends_on:
-      - db
-  reverse-proxy:
-    # The official v2 Traefik docker image
+      - "traefik"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "~/data/ChatApp/pgdata:/var/lib/postgresql/data/"
+    networks:
+      - "web"
+  django:
+    container_name: "django"
+    labels:
+      - "traefik.backend=django"
+      - "traefik.frontend.rule=Host:django.sebit.xyz"
+      - "traefik.docker.network=web"
+      - "traefik.port=8000"
+      - "traefik.enable=true"
+      - "traefik.http.routers.django.tls=true"
+      - "traefik.http.routers.django.tls.certresolver=myresolver"
+      #- "traefik.http.routers.django.rule=Host(jured.best)"
+      #- "traefik.http.routers.django.rule=Host(django.localhost)"
+      - "traefik.http.routers.django.entrypoints=https"
+    build: .
+    restart: "always"
+    environment:
+      DATABASE: "chatdb"
+      USERNAME: "chatuser"
+      PASSWORD: "chatpassword"
+      HOST: "db"
+      PORT: "5432"
+    volumes:
+      - ".:/code"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - "traefik"
+      - "postgres"
+    networks:
+      - "web"
+  traefik:
     image: "traefik:v2.3"
     container_name: "traefik"
-    command:
-      #- "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=true"
-      - "--entrypoints.websecure.address=:443"
+    labels:
+      - "traefik.frontend.rule=Host:monitor.sebit.xyz"
+      - "traefik.port=8080"
     ports:
-      # The HTTP port
       - "80:80"
       - "443:443"
-      # The Web UI (enabled by --api.insecure=true)
       - "8080:8080"
     volumes:
-      # So that Traefik can listen to the Docker events
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ~/ChatApp/traefik.yaml:/etc/traefik/traefik.yml
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "~/ChatApp/traefik.yaml:/etc/traefik/traefik.yml"
+      - "~/data/ChatApp/acme.json:/acme.json"
+    networks:
+      - "web"
+networks:
+  web:
+    driver: "bridge"
