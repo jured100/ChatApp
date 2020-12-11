@@ -12,4 +12,4 @@ certificatesResolvers:
       storage: acme.json
       httpChallenge:
         # used during the challenge
-        entryPoint: web
+        entryPoint: websecure
