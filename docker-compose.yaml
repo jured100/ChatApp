@@ -17,9 +17,9 @@ services:
 
   web:
     labels:
-      - traefik.http.routers.chat.tls=true
-      - traefik.http.routers.chat.tls.certresolver=myresolver
-      - "traefik.http.routers.chat.rule=Host(`jured.best`)"
+      - traefik.http.routers.web.tls=true
+      - traefik.http.routers.web.tls.certresolver=myresolver
+      - "traefik.http.routers.web.rule=Host(`jured.best`)"
     build: .
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
