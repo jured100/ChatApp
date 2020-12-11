@@ -11,6 +11,9 @@ services:
       POSTGRES_PASSWORD: chatpassword
     ports:
       - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+
 
   web:
     build: .
@@ -28,3 +31,5 @@ services:
       - 8000:8000
     depends_on:
       - db
+volumes:
+  pgdata: ~/data/ChatApp
