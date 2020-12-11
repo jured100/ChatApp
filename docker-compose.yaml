@@ -17,9 +17,9 @@ services:
 
   django:
     labels:
-      - traefik.http.routers.web.tls=true
-      - traefik.http.routers.web.tls.certresolver=myresolver
-      - "traefik.http.routers.web.rule=Host(`jured.best`)"
+      - traefik.http.routers.django.tls=true
+      - traefik.http.routers.django.tls.certresolver=myresolver
+      - "traefik.http.routers.django.rule=Host(`jured.best`)"
     build: .
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
