@@ -17,7 +17,7 @@ services:
 
   web:
     labels:
-      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
+      - "traefik.http.routers.whoami.rule=Host(`jured.best`)"
     build: .
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
