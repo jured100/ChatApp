@@ -25,7 +25,7 @@ from Recipes.views import menjajgeslo_view, menjajime_view
 from Recipes.models import Vrste,Postopki,Ocene,Sestavine,Slike,Komentarji,Recepti,ReceptiSestavine
 '''
 
-#from CustomUser.models import CustomUser
+# from CustomUser.models import CustomUser
 
 from django.conf import settings
 from django.conf.urls.static import static

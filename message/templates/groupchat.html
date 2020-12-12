@@ -11,13 +11,15 @@
             {% for f in comm %}
                 {% if user == f.sender %}
                     <div class="message message--mine">
-                        <p class="username">{{f.sender}}</p> <p class="userdate"> {{f.datum}} </p>
-                        <p class="txt">  {{f.txt}} </p>
+                        <p class="username">{{ f.sender }}</p>
+                        <p class="userdate"> {{ f.datum }} </p>
+                        <p class="txt">  {{ f.txt }} </p>
                     </div>
                 {% else %}
                     <div class="message message--other">
-                        <p class="username">{{f.sender}}</p> <p class="userdate"> {{f.datum}} </p>
-                        <p class="txt">  {{f.txt}} </p>
+                        <p class="username">{{ f.sender }}</p>
+                        <p class="userdate"> {{ f.datum }} </p>
+                        <p class="txt">  {{ f.txt }} </p>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -26,13 +28,13 @@
                 <form method="POST">
                     {% csrf_token %}
                     {{ form.txt }}
-                    
+
                     <button class="submission__button" type="submit">Dodaj</button>
                 </form>
             </div>
         </div>
-        
-        
+
+
 
     {% else %}
         <p>You are not logged in</p>

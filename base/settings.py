@@ -10,14 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-from pathlib import Path
 import os
-import environ
-
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -77,19 +74,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'base.wsgi.application'
 
-env = environ.Env()
-
 DATABASES = {
     'default': {
         # Put 'sqlite3' in environment variable to run locally
-        'ENGINE': f"django.db.backends.{env('DATABASE_ENGINE', 'postgresql')}",
-
+        'ENGINE': f"django.db.backends.{ os.environ.get('DATABASE_ENGINE', 'postgresql') }",
         # TODO: BASE_DIR / 'db.sqlite3'
-        'NAME': env('DATABASE'),
-        'USER': env('USERNAME'),
-        'PASSWORD': env('PASSWORD'),
-        'HOST': env('HOSTNAME'),
-        'PORT': env('PORT'),
+        'NAME': os.environ.get('DATABASE'),
+        'USER': os.environ.get('USERNAME'),
+        'PASSWORD': os.environ.get('PASSWORD'),
+        'HOST': os.environ.get('HOSTNAME'),
+        'PORT': os.environ.get('PORT'),
     }
 }
 
@@ -111,7 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -124,7 +117,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
