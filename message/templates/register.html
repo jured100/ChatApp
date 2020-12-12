@@ -9,20 +9,22 @@
             {% csrf_token %}
             Uporabniško ime: {{ form.username }} <br>
             <ul class="register__demands">
-                <li class="register__demands__item"> Maksimalno 150 znakov </li>
+                <li class="register__demands__item"> Maksimalno 150 znakov</li>
                 <li class="register__demands__item"> Dovoljene le črke, številke in @, ., +, -, _</li>
             </ul>
             Geslo: {{ form.password1 }} <br>
             <ul clas="register__demands">
-                <li class="register__demands__item"> Geslo ne sme biti prepodobno ostalim osebnim podatkom </li>
-                <li class="register__demands__item"> Geslo mora imeti vsaj 8 znakov </li>
-                <li class="register__demands__item"> Geslo ne sme biti prepopularno (npr. 123456 ali password) </li>
-                <li class="register__demands__item"> Geslo ne sme biti le iz številk </li>
+                <li class="register__demands__item"> Geslo ne sme biti prepodobno ostalim osebnim podatkom</li>
+                <li class="register__demands__item"> Geslo mora imeti vsaj 8 znakov</li>
+                <li class="register__demands__item"> Geslo ne sme biti prepopularno (npr. 123456 ali password)</li>
+                <li class="register__demands__item"> Geslo ne sme biti le iz številk</li>
             </ul>
             Potrditev gesla: {{ form.password2 }} <br>
-            
+
             <input type="hidden" name="next" value="{{ next }}">
-            <a href="{% url 'message:logout' %}"><button type="submit" class="register__submit">Submit</button></a>
+            <a href="{% url 'message:logout' %}">
+                <button type="submit" class="register__submit">Submit</button>
+            </a>
 
         </form>
     </div>

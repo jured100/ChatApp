@@ -1,15 +1,15 @@
 {% load static %}
 <html lang="si">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" href="{% static '/style.css' %}"/>
-        <title>Chat App</title>
-    </head>
-    <body>
-        <div class="content">
-            {% include "navbar.html" %}
-            
-            {% block content %}{% endblock %}
-        </div>
-    </body>
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="{% static '/style.css' %}"/>
+    <title>Chat App</title>
+</head>
+<body>
+<div class="content">
+    {% include "navbar.html" %}
+
+    {% block content %}{% endblock %}
+</div>
+</body>
 </html>

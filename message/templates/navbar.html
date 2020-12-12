@@ -17,7 +17,7 @@
         <li class="navbar__list__item">
             <a href="/login/">Prijava</a>
         </li>
-        {%  if request.user.is_authenticated %}
+        {% if request.user.is_authenticated %}
             <li class="navbar__list__item">
                 <a href="{% url 'message:profile' pk=request.user.pk %}">Profil</a>
             </li>
@@ -27,13 +27,13 @@
             </li>
         {% endif %}
         <li class="navbar__list__user">
-          {% if user.is_authenticated %}
-            Dober dan {{ user }}!
-            <p><a href="{% url 'message:logout' %}">Odjava</a></p>
-          {% else %}
-            <p>Prosim prijavi se</p>
-            <a href="{% url 'message:login' %}">Prijava</a>
-          {% endif %}</li>
+            {% if user.is_authenticated %}
+                Dober dan {{ user }}!
+                <p><a href="{% url 'message:logout' %}">Odjava</a></p>
+            {% else %}
+                <p>Prosim prijavi se</p>
+                <a href="{% url 'message:login' %}">Prijava</a>
+            {% endif %}</li>
     </ul>
 </nav>
 

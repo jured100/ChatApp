@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 
 '''
@@ -25,7 +26,7 @@ from Recipes.views import menjajgeslo_view, menjajime_view
 from Recipes.models import Vrste,Postopki,Ocene,Sestavine,Slike,Komentarji,Recepti,ReceptiSestavine
 '''
 
-#from CustomUser.models import CustomUser
+# from CustomUser.models import CustomUser
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -34,3 +35,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('message.urls')),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
