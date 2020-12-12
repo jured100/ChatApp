@@ -1,0 +1,13 @@
+spec:
+  name: chatapp
+  services:
+    - name: web
+      git:
+        branch: main
+        repo_clone_url: https://github.com/jured100/ChatApp.git
+      envs:
+        - key: DATABASE_URL
+          scope: RUN_TIME
+          value: ${chatapp_db.DATABASE_URL}
+  databases:
+    - name: chatapp_db
