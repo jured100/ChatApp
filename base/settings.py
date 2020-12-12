@@ -14,6 +14,9 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import dj_database_url
+from django.conf.global_settings import DATABASES
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -74,18 +77,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'base.wsgi.application'
 
-DATABASES = {
-    'default': {
-        # Put 'sqlite3' in environment variable to run locally
-        'ENGINE': f"django.db.backends.{ os.environ.get('DATABASE_ENGINE', 'postgresql') }",
-        # TODO: BASE_DIR / 'db.sqlite3'
-        'NAME': os.environ.get('DATABASE'),
-        'USER': os.environ.get('USERNAME'),
-        'PASSWORD': os.environ.get('PASSWORD'),
-        'HOST': os.environ.get('HOSTNAME'),
-        'PORT': os.environ.get('PORT'),
-    }
-}
+DATABASES['default'] = dj_database_url.config(
+    conn_max_age=600,
+    #default='sqlite:////db.sqlite3'
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
