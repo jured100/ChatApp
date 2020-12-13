@@ -4,18 +4,18 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.generic import TemplateView, FormView, ListView
+from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import ModelFormMixin, UpdateView
+from rest_framework.generics import ListAPIView, CreateAPIView
 
-from message import templates
 from .forms import SubmissionForm, ProfileForm
-from .models import ChatBox
-
-
+from .models import Message
 # Create your views here.
 # Registracija, login (logout je pod template)
+from .serializers import MessageSerializer
+
 
 def home_view(request, *args):
     return render(request, "about.html")
@@ -59,28 +59,28 @@ def logout_view(request):
 
 class ChatView(ModelFormMixin, ListView):
     template_name = 'groupchat.html'
-    model = ChatBox
+    model = Message
     form_class = SubmissionForm
 
     def get_queryset(self):
-        qs = ChatBox.objects.filter(receiver__isnull=True)
+        qs = Message.objects.filter(receiver__isnull=True)
         other_user = self.kwargs.get('other_user')
 
         if other_user:
-            qs = ChatBox.objects.filter(receiver=other_user)
+            qs = Message.objects.filter(receiver=other_user)
 
         return qs
 
 
 def group_chat_view(request, *args, **kwargs):
-    comm = ChatBox.objects.filter(receiver__isnull=True)
+    comm = Message.objects.filter(receiver__isnull=True)
     other_user = None
     receiver_id = kwargs.get('receiving_user__id')
     form = SubmissionForm(request.POST)
 
     if receiver_id:
         other_user = get_object_or_404(get_user_model(), pk=receiver_id)
-        comm = ChatBox.objects.filter(
+        comm = Message.objects.filter(
             Q(receiver=other_user, sender=request.user) | Q(receiver=request.user, sender=other_user)
         )
 
@@ -136,3 +136,13 @@ class ProfileView(UpdateView):
 
 def profile_view(request):
     return render(request, "profile.html")
+
+
+class MessageListView(ListAPIView):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+
+
+class MessageUpdateView(CreateAPIView):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer

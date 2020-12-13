@@ -42,6 +42,7 @@ DJANGO_APPS = [
 
 # Custom apps
 PROJECT_APPS = [
+    'rest_framework',
     'message',
 ]
 
@@ -79,7 +80,7 @@ WSGI_APPLICATION = 'base.wsgi.application'
 
 DATABASES['default'] = dj_database_url.config(
     conn_max_age=600,
-    default=f"sqlite:///{ os.path.join(BASE_DIR, 'db.sqlite3') }"
+    default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}"
 )
 
 # Password validation
@@ -121,3 +122,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, '/')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}

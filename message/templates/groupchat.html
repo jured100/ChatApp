@@ -1,33 +1,26 @@
 {% extends "base.html" %}
+{% load static %}
+{% block head %}
+    <script src="{% static 'vue.min.js' %}"></script>
+{% endblock %}
 
 {% block content %}
-
-
-
     {% if user.is_authenticated %}
-
-
-        <div class="chatbox">
-            {% for f in comm %}
-                {% if user == f.sender %}
-                    <div class="message message--mine">
-                        <p class="username">{{ f.sender }}</p>
-                        <p class="userdate"> {{ f.datum }} </p>
-                        <p class="txt">  {{ f.txt }} </p>
-                    </div>
-                {% else %}
-                    <div class="message message--other">
-                        <p class="username">{{ f.sender }}</p>
-                        <p class="userdate"> {{ f.datum }} </p>
-                        <p class="txt">  {{ f.txt }} </p>
-                    </div>
-                {% endif %}
-            {% endfor %}
+        <div class="messages" id="chatbox">
+            <div class="message" v-for="m in messages"
+                 :class="{
+                    'message--mine': mePk == m.sender,
+                    'message--other': mePk != m.sender,
+                 }">
+                <p class="username" v-html="m.username"></p>
+                <p class="userdate" v-html="m.datum"></p>
+                <p class="txt" v-html="m.txt"></p>
+            </div>
 
             <div class="submission">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form.txt }}
+                <form method="POST" @submit.prevent="handleSubmit">
+                    <textarea v-model="newTxt" rows="10" class="submission__textarea"
+                              name="{{ form.txt.html_name }}"></textarea>
 
                     <button class="submission__button" type="submit">Dodaj</button>
                 </form>
@@ -41,6 +34,56 @@
         <a href="{% url 'message:login' %}">login</a>
     {% endif %}
 
-
+    <script lang="text/javascript">
+        window.addEventListener('DOMContentLoaded', () => {
+            var app = new Vue({
+                el: '#chatbox',
+                data: {
+                    messages: [],
+                    me: '{{ request.user.username }}',
+                    mePk: {{ request.user.pk }},
+                    urls: {
+                        list: "{% url 'message:list' %}",
+                        update: "{% url 'message:update' %}",
+                    },
+                    newTxt: '',
+                    csrfToken: "{{ csrf_token }}"
+                },
+                mounted() {
+                    this.getMessages()
+                    setInterval(this.getMessages, 500)
+                },
+                methods: {
+                    async getMessages() {
+                        var response = await fetch(this.urls.list)
+                        this.messages = await response.json()
+                    },
+                    async createMessage() {
+                        var response = await fetch(
+                            this.urls.update,
+                            {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    sender: this.mePk,
+                                    txt: this.newTxt,
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': this.csrfToken,
+                                },
+                                mode: 'same-origin'
+                            },
+                        )
+                        if (response.ok) {
+                            this.newTxt = ''
+                        }
+                    },
+                    handleSubmit(e) {
+                        this.createMessage()
+                    }
+                },
+            })
+        })
+    </script>
 
 {% endblock %}
