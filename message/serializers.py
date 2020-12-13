@@ -14,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class MessageSerializer(serializers.ModelSerializer):
     sender = UserSerializer
+    receiver = UserSerializer
     username = serializers.SerializerMethodField('getUsername')
     datum = serializers.DateTimeField(
         format='%d-%m-%Y %H:%M',
@@ -25,5 +26,5 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ('sender', 'txt', 'datum', 'username',)
+        fields = ('sender', 'txt', 'datum', 'username', 'receiver',)
         read_only_fields = ('datum', 'username',)

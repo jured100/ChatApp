@@ -9,8 +9,8 @@
         <div class="messages" id="chatbox">
             <div class="message" v-for="m in messages"
                  :class="{
-                    'message--mine': mePk == m.sender,
-                    'message--other': mePk != m.sender,
+                    'message--mine': myId == m.sender,
+                    'message--other': myId != m.sender,
                  }">
                 <p class="username" v-html="m.username"></p>
                 <p class="userdate" v-html="m.datum"></p>
@@ -40,11 +40,12 @@
                 el: '#chatbox',
                 data: {
                     messages: [],
-                    me: '{{ request.user.username }}',
-                    mePk: {{ request.user.pk }},
+                    myUsername: '{{ request.user.username }}',
+                    myId: {{ request.user.pk }},
+                    otherId: {% if other_user_id %}{{ other_user_id }}{% else %}null{% endif %},
                     urls: {
-                        list: "{% url 'message:list' %}",
-                        update: "{% url 'message:update' %}",
+                        list: "{% if other_user_id %}{% url 'message:list_private' pk=other_user_id %}{% else %}{% url 'message:list' %}{% endif %}",
+                        create: "{% if other_user_id %}{% url 'message:create_private' pk=other_user_id %}{% else %}{% url 'message:create' %}{% endif %}",
                     },
                     newTxt: '',
                     csrfToken: "{{ csrf_token }}"
@@ -59,20 +60,22 @@
                         this.messages = await response.json()
                     },
                     async createMessage() {
+                        var vals = {
+                            sender: this.myId,
+                            txt: this.newTxt,
+                            receiver: this.otherId,
+                        }
                         var response = await fetch(
-                            this.urls.update,
+                            this.urls.create,
                             {
                                 method: 'POST',
-                                body: JSON.stringify({
-                                    sender: this.mePk,
-                                    txt: this.newTxt,
-                                }),
+                                body: JSON.stringify(vals),
                                 headers: {
                                     'Content-Type': 'application/json',
                                     'X-CSRFToken': this.csrfToken,
                                 },
                                 mode: 'same-origin'
-                            },
+                            }
                         )
                         if (response.ok) {
                             this.newTxt = ''

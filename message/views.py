@@ -72,17 +72,20 @@ class ChatView(ModelFormMixin, ListView):
         return qs
 
 
-def group_chat_view(request, *args, **kwargs):
-    comm = Message.objects.filter(receiver__isnull=True)
+def group_chat_view(request, *context, **kwargs):
+    qs = Message.objects.filter(receiver__isnull=True)
     other_user = None
-    receiver_id = kwargs.get('receiving_user__id')
+    other_user_id = kwargs.get('receiving_user__id')
     form = SubmissionForm(request.POST)
+    print(other_user_id)
+    context = {}
 
-    if receiver_id:
-        other_user = get_object_or_404(get_user_model(), pk=receiver_id)
-        comm = Message.objects.filter(
+    if other_user_id:
+        other_user = get_object_or_404(get_user_model(), pk=other_user_id)
+        qs = Message.objects.filter(
             Q(receiver=other_user, sender=request.user) | Q(receiver=request.user, sender=other_user)
         )
+        context['other_user_id'] = other_user_id
 
     if request.method == 'POST':
         if form.is_valid():
@@ -94,8 +97,10 @@ def group_chat_view(request, *args, **kwargs):
             form = SubmissionForm()
             return HttpResponseRedirect(request.path_info)
 
-    args = {"form": form, "comm": comm}
-    return render(request, "groupchat.html", args)
+    context['form'] = form
+    context['qs'] = qs
+    context['kwargs'] = kwargs
+    return render(request, "groupchat.html", context)
 
 
 def users_view(request):
@@ -139,10 +144,23 @@ def profile_view(request):
 
 
 class MessageListView(ListAPIView):
+    serializer_class = MessageSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        qs = Message.objects.filter(receiver__isnull=True)
+        u = self.request.user
+
+        if pk:
+            other_user = get_object_or_404(get_user_model(), pk=pk)
+            qs = Message.objects.filter(
+                Q(receiver=other_user, sender=u) | Q(receiver=u, sender=other_user)
+            )
+
+        return qs
+
+
+class MessageCreateView(CreateAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
 
-
-class MessageUpdateView(CreateAPIView):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
