@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    Trenutno registrirani uporabniki (pritisni na uporabnika za njihov profil): <br>
+    Trenutno registrirani uporabniki (pritisni na uporabnika za privatno komunikacijo): <br>
     {% if request.user.is_authenticated %}
         {% for u in users %}
             {% comment %} <p class="username"><a href="/lookup?id={{ u.username }}"> {{u.username}} </a></p> {% endcomment %}
