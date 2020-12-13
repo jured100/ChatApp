@@ -28,9 +28,6 @@ from Recipes.models import Vrste,Postopki,Ocene,Sestavine,Slike,Komentarji,Recep
 
 # from CustomUser.models import CustomUser
 
-from django.conf import settings
-from django.conf.urls.static import static
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('message.urls')),
